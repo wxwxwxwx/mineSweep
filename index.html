@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            font-weight: bolder;
+            font-family: 微软雅黑;
+        }
+        body{
+            background: url("images/2.png");
+        }
+        .list {
+            width: 250px;
+            height: 600px;
+            position: absolute;
+            top: 100px;
+            margin-left: 100px;
+
+        }
+
+        .list span {
+            display: block;
+            padding: 15px 30px;
+            font-size: 24px;
+            color: white;
+            margin: 30px;
+            text-align: center;
+
+        }
+
+        .chu {
+            background: red;
+        }
+
+        .zhong {
+            background: green;
+        }
+
+        .gaoji {
+            background: #434eff;
+        }
+
+        .sence {
+            width: 600px;
+            height: 600px;
+            margin: 100px auto;
+
+        }
+
+        .block {
+            margin: 5px;
+            width: 45px;
+            height: 45px;
+
+            float: left;
+            text-align: center;
+            line-height: 40px;
+            background:url("images/1.png");
+            border-radius: 6px;
+        }
+
+        .tip {
+            background: url("3.png");
+            color: rgba(59, 28, 5, 0.82);
+
+
+        }
+
+        .biaoji::after {
+            content: "⛳";
+        }
+
+    </style>
+</head>
+<body>
+<div class="list">
+    <span class="chu">初级</span>
+    <span class="zhong">中级</span>
+    <span class="gaoji">高级</span>
+</div>
+<div class="sence">
+
+</div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+
+<script>
+    var zb2id = function (x, y) {
+        return x + '-' + y;
+    };
+    $(document).on("contextmenu", false);
+    var jisuan = function (x, y) {
+        var num = 0;
+        if ($('#' + zb2id(x + 1, y + 1)).is('.lei')) {
+            num++
+        }
+        if ($('#' + zb2id(x + 1, y - 1)).is('.lei')) {
+            num++
+        }
+        if ($('#' + zb2id(x + 1, y)).is('.lei')) {
+            num++
+        }
+        if ($('#' + zb2id(x - 1, y + 1)).is('.lei')) {
+            num++
+        }
+        if ($('#' + zb2id(x - 1, y - 1)).is('.lei')) {
+            num++
+        }
+        if ($('#' + zb2id(x - 1, y)).is('.lei')) {
+            num++
+        }
+        if ($('#' + zb2id(x, y + 1)).is('.lei')) {
+            num++
+        }
+        if ($('#' + zb2id(x, y - 1)).is('.lei')) {
+            num++
+        }
+
+
+        return num;
+    };
+if ( $(".tip").text()===1){
+    $(".tip").css('color','red')
+}
+
+    var zuojian = function (e) {
+        if ($(this).is('.biaoji')) {
+            return;
+        }
+
+        if (e.data.lei) {
+            $('.lei').css('background','url(images/111.png)');
+            alert("si");
+
+        } else {
+            $(this).text(jisuan(e.data.x, e.data.y)).addClass('tip');
+            $('.tip').each(function (v) {
+                var a = Number($(this).text());
+
+
+                if(a===0){
+
+                } if(a===1){
+                    $(this).css('color','yellow')
+                } if(a===2){
+                    $(this).css('color','green')
+
+                }
+
+            })
+        }
+    };
+
+    var youjian = function (e) {
+        if ($(this).is('.tip')) {
+            return;
+        } else {
+            $(this).toggleClass('biaoji');
+        }
+        if ($('.biaoji').length === $('.lei').length) {
+            if ($('.biaoji.lei').length === $('.lei').length) {
+                $(this).css('background','url(111.png)');
+                alert('ying');
+$('.lei').text('lei');
+            }
+        }
+    };
+    var clickHandler = function (e) {
+        if (e.which === 1) {
+            zuojian.call(this, e);
+        } else if (e.which === 3) {
+            youjian.call(this, e);
+        }
+
+    };
+
+    for (var i = 0; i < 10; i++) {
+        for (var j = 0; j < 10; j++) {
+            var islei = Math.random() > 0.8;
+            $('<div>')
+                    .attr('id', i + '-' + j)
+                    .addClass(function () {
+                        return 'block ' + ( islei ? 'lei' : '')
+                    })
+
+                    //                    .text(function () {
+                    //                        return islei ? 'lei' : '';
+                    //                    })
+                    .on('mousedown', {x: i, y: j, lei: islei}, clickHandler)
+                    .appendTo('.sence');
+
+        }
+    }
+
+
+</script>
+</html>
